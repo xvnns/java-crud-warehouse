@@ -1,0 +1,373 @@
+{
+	"info": {
+		"_postman_id": "b15d5d91-5609-4d5d-bf12-7ae01ce9cc49",
+		"name": "Warehouse",
+		"description": "CRUD application for warehouse",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18944439"
+	},
+	"item": [
+		{
+			"name": "Create Product",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"is created\", () => pm.response.to.have.status(201));\r",
+									"pm.test(\"id was assigned\", () => pm.expect(pm.response.json().id).to.be.not.null);\r",
+									"\r",
+									"pm.collectionVariables.set(\"id\", pm.response.json());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"name\", \"HUAWEI FreeBuds SE 2\");\r",
+									"pm.collectionVariables.set(\"vendor_code\", \"123456\");\r",
+									"pm.collectionVariables.set(\"description\", \"Play music, skip tracks, answer calls, or speak to the voice assistant, with just a couple taps.\");\r",
+									"pm.collectionVariables.set(\"category\", \"headphones\");\r",
+									"pm.collectionVariables.set(\"price\", 72);\r",
+									"pm.collectionVariables.set(\"quantity\", 1000);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"vendor_code\": \"{{vendor_code}}\",\r\n    \"description\": \"{{description}}\",\r\n    \"category\": \"{{category}}\",\r\n    \"price\": \"{{price}}\",\r\n    \"quantity\": {{quantity}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Product",
+			"item": [
+				{
+					"name": "Get All Entries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is ok\", () => pm.response.to.have.status(200));\r",
+									"pm.test(\"id was assigned\", () => pm.expect(pm.response.json().id).to.be.not.null);\r",
+									"pm.test(\"name is correct\", () => pm.expect(pm.response.json().name).to.equal(pm.variables.get(\"name\")));\r",
+									"pm.test(\"description is correct\", () => pm.expect(pm.response.json().description).to.equal(pm.variables.get(\"description\")));\r",
+									"pm.test(\"category is correct\", () => pm.expect(pm.response.json().category).to.equal(pm.variables.get(\"category\")));\r",
+									"pm.test(\"price is correct\", () => pm.expect(pm.response.json().price).to.equal(pm.variables.get(\"price\")));\r",
+									"pm.test(\"quantity is correct\", () => pm.expect(pm.response.json().quantity).to.equal(pm.variables.get(\"quantity\")));\r",
+									"pm.test(\"vendor_code is correct\", () => pm.expect(pm.response.json().vendor_code).to.equal(pm.variables.get(\"vendor_code\")));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/products/{{id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update Product",
+			"item": [
+				{
+					"name": "Update By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", () => pm.response.to.have.status(200));\r",
+									"pm.test(\"id was assigned\", () => pm.expect(pm.response.json().id).to.be.not.null);\r",
+									"\r",
+									"pm.test(\"name is correct\", () => pm.expect(pm.response.json().name).to.equal(pm.variables.get(\"name\")));\r",
+									"pm.test(\"description is correct\", () => pm.expect(pm.response.json().description).to.equal(pm.variables.get(\"description\")));\r",
+									"pm.test(\"category is correct\", () => pm.expect(pm.response.json().category).to.equal(pm.variables.get(\"category\")));\r",
+									"pm.test(\"price is correct\", () => pm.expect(pm.response.json().price).to.equal(pm.variables.get(\"price\")));\r",
+									"pm.test(\"quantity is correct\", () => pm.expect(pm.response.json().quantity).to.equal(pm.variables.get(\"new_quantity\")));\r",
+									"pm.test(\"vendor_code is correct\", () => pm.expect(pm.response.json().vendor_code).to.equal(pm.variables.get(\"vendor_code\")));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"new_quantity\", 567);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"vendor_code\": \"{{vendor_code}}\",\r\n    \"description\": \"{{description}}\",\r\n    \"category\": \"{{category}}\",\r\n    \"price\": \"{{price}}\",\r\n    \"quantity\": \"{{new_quantity}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/products/{{id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete Product",
+			"item": [
+				{
+					"name": "Delete By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"no content status\", () => pm.response.to.have.status(204));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/products/{{id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Multi-criteria search",
+			"item": [
+				{
+					"name": "Search product",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// pm.collectionVariables.set(\"price_field\", \"price\");\r",
+									"// pm.collectionVariables.set(\"quantity_field\", \"quantity\");\r",
+									"// pm.collectionVariables.set(\"create_ts_field\", \"create_ts\");\r",
+									"// pm.collectionVariables.set(\"name_field\", \"name\");\r",
+									"\r",
+									"// pm.collectionVariables.set(\"equal\", \"=\");\r",
+									"// pm.collectionVariables.set(\"greater_than_or_eq\", \">=\");\r",
+									"// pm.collectionVariables.set(\"less_than_or_eq\", \"<=\");\r",
+									"// pm.collectionVariables.set(\"like\", \"~\");\r",
+									"\r",
+									"// pm.collectionVariables.set(\"price_value\", 9);\r",
+									"// pm.collectionVariables.set(\"quantity_value\", 1);\r",
+									"// pm.collectionVariables.set(\"create_ts_value\", \"2024-01-01 11:08:49\");\r",
+									"// pm.collectionVariables.set(\"name_value\", \"test\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test('is an array', () => pm.expect(pm.response.json()).to.be.an('array'))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"field\": \"price\",\r\n        \"value\": 9.0,\r\n        \"operation\": \">=\"\r\n    },\r\n    {\r\n        \"field\": \"quantity\",\r\n        \"value\": 1,\r\n        \"operation\": \"=\"\r\n    },\r\n    {\r\n        \"field\": \"create_ts\",\r\n        \"value\": \"2024-01-01 11:08:49\",\r\n        \"operation\": \">=\"\r\n    },\r\n    {\r\n        \"field\": \"name\",\r\n        \"value\": \"test\",\r\n        \"operation\": \"~\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/products/search?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products",
+								"search"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "name",
+			"value": ""
+		},
+		{
+			"key": "vendor_code",
+			"value": ""
+		},
+		{
+			"key": "description",
+			"value": ""
+		},
+		{
+			"key": "category",
+			"value": ""
+		},
+		{
+			"key": "price",
+			"value": ""
+		},
+		{
+			"key": "quantity",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "new_quantity",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    username: postgres
+    password: 11
+    url: jdbc:postgresql://localhost:5432/warehouse
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.xml
+
+app:
+  scheduling:
+    mode: none #optimized, simple
+    optimization:
+      exclusive-lock: true
+    priceIncreasePercentage: 10
+    period: 500000
+    batch_size: 100000
+
